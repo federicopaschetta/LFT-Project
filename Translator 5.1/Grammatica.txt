@@ -1,0 +1,96 @@
+/* 
+
+<prog> -> <stalist> EOF
+<statlist> -> <stat> <stalistp>
+<statlistp> -> ; <stat> <statlistp> | eps
+<stat> -> assign <expr> to <idlist>
+	| print (<exprlist>)
+	| read (<idlist>)
+	| while (<bexpr>) <stat>
+	| if (<bexpr>) <stat> <statp>
+	| {<statlist>}
+<statp> -> else <stat> end | end
+<idlist> -> ID <idlistp>
+<idlistp> -> , ID <idlistp> | eps
+<bexpr> -> RELOP <expr> <expr>
+<expr> -> + (<exprlist>) | - <expr> <expr>
+	| * (<exprlist>) | / <expr> <expr>
+	| NUM | ID
+<exprlist> -> <expr> <exprlistp>
+<exprlistp> -> , <expr> <exprlistp> | eps
+FIRST:
+
+FIRST(P) = FIRST(Sl) = FIRST(S) = assign | print | read | while | if | {
+FIRST(Sl) = FIRST(S) = assign | print | read | while | if | {
+FIRST(Sl') = ;
+FIRST(S) = assign | print | read | while | if | {
+FIRST(I) = ID
+FIRST(I') = ,
+FIRST(B) = RELOP
+FIRST(E) = +, -, *, /, NUM, ID
+FIRST(El) = FIRST(E) = +, -, *, /, NUM, ID
+FIRST(El') = ,
+
+FOLLOW:
+
+$ e FOLLOW(P)
+FIRST(EOF) e FOLLOW(Sl)
+FIRST(Sl') e FOLLOW(S)
+FOLLOW(Sl) e FOLLOW(S)
+FOLLOW(Sl) e FOLLOW(Sl')
+to e FOLLOW(E)
+FOLLOW(S) e FOLLOW(I)
+) e FOLLOW(El)
+) e FOLLOW(I)
+) e FOLLOW(B)
+end e FOLLOW(S)
+else e FOLLOW(S)
+} e FOLLOW(Sl)
+FOLLOW(I) e FOLLOW(Il')
+FIRST(E) e FOLLOW(E)
+FOLLOW(B) e FOLLOW(E)
+) e FOLLOW(El)
+FIRST(El') e FOLLOW(E)
+FOLLOW(El) e FOLLOW(El')
+
+P -> $
+Sl -> EOF, }
+Sl' -> EOF, }
+S -> ;, end, else, EOF, }
+I -> ), ;, end, else, EOF, }
+Il' -> ), ;, end, else, EOF, }
+B -> )
+E -> to, +, -, *, /, NUM, ID, ,, )
+El -> )
+El' -> )
+
+INSIEMI GUIDA:
+
+P -> Sl EOF = FIRST(Sl) = assign | print | read | while | if | {
+Sl -> S Sl' = FIRST(S) = assign | print | read | while | if | {
+Sl' -> ; S Sl' = FIRST(;) = ;
+Sl' -> eps = FOLLOW(Sl') = EOF, {
+S -> assign E to Il -> FIRST(assign) = assign
+    | print (El) -> FIRST(print) = print
+    | read (I) -> FIRST(read) = read
+    | while (B) S -> FIRST(while) = while
+    | if (B) S S'-> FIRST(if) = if
+    | {Sl} -> FIRST({) = {
+S' -> else S end -> FIRST(else) = else
+	| end -> FIRST(end) = end
+I -> ID I' = FIRST(ID) = ID
+Il' -> , ID I' = FIRST(,) = ,
+Il' -> eps = FOLLOW(Il') = ), ;, end, else, EOF, }
+B -> RELOP E E = FIRST(RELOP) = RELOP
+E -> +(El) -> FIRST(+) = +
+    | -E E -> FIRST(-) = - 
+    | *(El) -> FIRST(*) = *
+    | /E E -> FIRST(/) = /
+    | NUM -> FIRST(NUM) = NUM
+    | ID -> FIRST(ID) = ID
+El -> E El' = FIRST(E) = +, -, *, /, NUM, ID
+El' -> , E El' = FIRST(,) = ,
+El' -> eps = FOLLOW(El') = )
+
+*/
+

@@ -1,0 +1,35 @@
+S -> E EOF
+E -> TE'
+E' -> +TE | -TE | eps
+T -> FT'
+T' -> *FT | /FT | eps
+F -> (E) | NUM
+
+FIRST(S) = (, NUM
+FIRST(E) = (, NUM
+FIRST(E') = +, -
+FIRST(T) = (, NUM
+FIRST(T') = *, /
+FIRST(F) = (, NUM
+
+FOLLOW(S) = $
+FOLLOW(E) = $, )
+FOLLOW(E') = $, )
+FOLLOW(T) = $, +, -, )
+FOLLOW(T') =$, +, -, )
+FOLLOW(F) = *, /, ), $
+
+
+
+
+S -> E =  first(E) = (, num
+E -> TE' = first(T) =  (, num
+E' -> +TE = + 
+E' -> -TE =  -
+E' -> eps = follow(E') = $,)
+T -> FT' = first(F) = (, num
+T' -> *FT' = *
+T' -> /FT' = /
+T' -> eps = follow(T') = $, ), +, -
+F -> (E) = first(E) = (
+F-> NUM = NUM

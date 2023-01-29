@@ -1,0 +1,2 @@
+assign 25 to x;
+if(! && > x 20 || < x 20 > x 30) print(x) end

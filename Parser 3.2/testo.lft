@@ -1,0 +1,14 @@
+assign 10 to x;
+assign 20 to y,z;
+read(x, y, z);
+if (< x y) {
+    while ( < x y) {
+        assign +(x, 1) to x;
+        assign - y 1 to y
+    }
+}
+    else {
+        print(x)
+    } end;
+    print(x, y, z)
+   

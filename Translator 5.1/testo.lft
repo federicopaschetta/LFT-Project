@@ -1,0 +1,2 @@
+assign 10 to x;
+if(< x 20) print(x) end

@@ -1,0 +1,3 @@
+assign +(1, 1) to x, y, z;
+///***svdw
+print(x)
